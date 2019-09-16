@@ -24,6 +24,10 @@ pipeline {
 	agent any
 	stages {
 		stage('Preparation') {
+			tools {
+                   jdk "jdk-1.8.101"
+            }
+
 			steps {
 				// Clone Moqui Framework
 				checkout([$class: 'GitSCM',
@@ -65,6 +69,10 @@ pipeline {
 		}
 
 		stage('Build') {
+			tools {
+                   jdk "jdk-1.8.101"
+            }
+
 			steps {
 				// Set gradle home so it doesn't get killed in the home directory
 				sh """
