@@ -68,6 +68,7 @@ pipeline {
 			steps {
 				// Set gradle home so it doesn't get killed in the home directory
 				sh """
+					java -version
 					export GRADLE_USER_HOME=".gradle"
 					./gradlew -g \$GRADLE_USER_HOME getDepends -PlocationType=current
 					rm -r .git
