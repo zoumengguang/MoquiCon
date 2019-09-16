@@ -33,7 +33,7 @@ pipeline {
 						$class: 'SubmoduleOption',
 						recursiveSubmodules: true,
 					]],
-					userRemoteConfigs: [[credentialsId: 'addb3110-b76e-409e-9746-eab461a37285', url: 'https://github.com/mkdecisiondev/mk-moqui.git']]
+					userRemoteConfigs: [[url: 'https://github.com/moqui/moqui-framework']]
 				])
 			
 				// Clone Moqui Runtime
@@ -45,7 +45,7 @@ pipeline {
 						doGenerateSubmoduleConfigurations: false,
 						extensions: [[
 							$class: 'RelativeTargetDirectory', 
-							relativeTargetDir: "moqui-framework/runtime"]],
+							relativeTargetDir: "runtime"]],
 						userRemoteConfigs: [[url: 'https://github.com/moqui/moqui-runtime.git']]
 					]
 				)
@@ -53,13 +53,12 @@ pipeline {
 				// Clone Basic Moqui Components
 				loop(moquiComponents)
 
-		
 				// Clone MoquiCon
 				checkout([$class: 'GitSCM',
 					branches: [[name: '*/master']],
 					extensions: [[
 						$class: 'RelativeTargetDirectory',
-						relativeTargetDir: "moqui-framework/runtime/component/MoquiCon"]], 
+						relativeTargetDir: "runtime/component/MoquiCon"]], 
 					userRemoteConfigs: [[url: 'https://github.com/mkdecisiondev/MoquiCon']]
 				])
 			}
