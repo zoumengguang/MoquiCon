@@ -98,7 +98,7 @@ pipeline {
 					java -version
 					ls
 					cd runtime/component/MoquiCon
-					${scannerHome}/bin/sonar-scanner
+					${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties
 				"""
 				}
 
