@@ -14,7 +14,7 @@ def loop(list) {
 			branches: [[name: '*/master']],
 			extensions: [[
 				$class: 'RelativeTargetDirectory',
-				relativeTargetDir: "moqui-framework/runtime/component/${item}"]],
+				relativeTargetDir: "runtime/component/${item}"]],
 			userRemoteConfigs: [[ url: "https://github.com/moqui/${item}.git"]]
 		])
 	}
@@ -68,8 +68,7 @@ pipeline {
 			steps {
 				// Set gradle home so it doesn't get killed in the home directory
 				sh """
-					export GRADLE_USER_HOME="`pwd`/.gradle"
-					cd moqui-framework
+					export GRADLE_USER_HOME=".gradle"
 					./gradlew -g \$GRADLE_USER_HOME getDepends -PlocationType=current
 					curl -o runtime/lib/mysql-connector-java-8.0.12.jar http://central.maven.org/maven2/mysql/mysql-connector-java/8.0.12/mysql-connector-java-8.0.12.jar
 					curl -o runtime/lib/postgresql-42.2.5.jar https://jdbc.postgresql.org/download/postgresql-42.2.5.jar
@@ -79,7 +78,7 @@ pipeline {
 					cd ..
 					./docker-build.sh moqui-framework ${containerRepository}
 				"""
-				archiveArtifacts artifacts: 'moqui-framework/*.war', fingerprint: true
+				archiveArtifacts artifacts: '*.war', fingerprint: true
 			}
 		}
 	}
