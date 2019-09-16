@@ -96,7 +96,7 @@ pipeline {
 				withSonarQubeEnv('sonarqube') {
 					sh """
 					java -version
-					pwd
+					ls
 					cd runtime/component/MoquiCon
 					${scannerHome}/bin/sonar-scanner
 				"""
