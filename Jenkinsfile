@@ -86,5 +86,25 @@ pipeline {
 				archiveArtifacts artifacts: '*.war', fingerprint: true
 			}
 		}
+
+		stage('Scan') {
+			environment {
+        		scannerHome = tool 'Sonar Scanner'
+    		}
+
+			steps {
+				withSonarQubeEnv('sonarqube') {
+					sh """
+					java -version
+					cd runtime/component/MoquiCon
+					${scannerHome}/bin/sonar-scanner
+				"""
+				}
+
+				timeout(time: 10, unit: 'MINUTES') {
+					waitForQualityGate abortPipeline: true
+				}
+			}
+		}
 	}
 }
