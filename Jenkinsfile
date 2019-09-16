@@ -39,7 +39,7 @@ pipeline {
 				)
 			
 				// Clone Basic Moqui Components
-				for (comp in moquiComponents) {
+				moquiComponents.each { comp ->
 					checkout(changelog: false, poll: false, scm:[$class: 'GitSCM',
 						branches: [[name: '*/master']],
 						extensions: [[
