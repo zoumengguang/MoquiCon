@@ -8,6 +8,18 @@ def moquiComponents = [
 	'PopRestStore',
 ]
 
+def loop(list) {
+	list.each { item -> 
+		checkout(changelog: false, poll: false, scm:[$class: 'GitSCM',
+			branches: [[name: '*/master']],
+			extensions: [[
+				$class: 'RelativeTargetDirectory',
+				relativeTargetDir: "moqui-framework/runtime/component/${item}"]],
+			userRemoteConfigs: [[ url: "https://github.com/moqui/${item}.git"]]
+		])
+	}
+}
+
 pipeline {
 	agent any
 	stages {
@@ -39,15 +51,8 @@ pipeline {
 				)
 			
 				// Clone Basic Moqui Components
-				for (comp in moquiComponents) {
-					checkout(changelog: false, poll: false, scm:[$class: 'GitSCM',
-						branches: [[name: '*/master']],
-						extensions: [[
-							$class: 'RelativeTargetDirectory',
-							relativeTargetDir: "moqui-framework/runtime/component/${comp}"]],
-						userRemoteConfigs: [[ url: "https://github.com/moqui/${comp}.git"]]
-					])
-				}
+				loop(moquiComponents)
+
 		
 				// Clone MoquiCon
 				checkout([$class: 'GitSCM',
