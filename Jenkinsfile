@@ -25,7 +25,7 @@ pipeline {
 	stages {
 		stage('Preparation') {
 			tools {
-                   jdk "jdk-1.8.101"
+                   jdk "Java 8"
             }
 
 			steps {
@@ -70,7 +70,7 @@ pipeline {
 
 		stage('Build') {
 			tools {
-                   jdk "jdk-1.8.101"
+                   jdk "Java 8"
             }
 
 			steps {
