@@ -9,7 +9,7 @@ def moquiComponents = [
 ]
 
 pipeline {
-	node
+	agent any
 	stages {
 		stage('Preparation') {
 			// Clone Moqui Framework
