@@ -96,9 +96,9 @@ pipeline {
 				withSonarQubeEnv('sonarqube') {
 					sh """
 					java -version
-					ls
 					cd runtime/component/MoquiCon
-					${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties
+					ls
+					${scannerHome}/bin/sonar-scanner -Dproject.settings=./sonar-project.properties
 				"""
 				}
 
