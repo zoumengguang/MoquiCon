@@ -59,7 +59,7 @@ pipeline {
 
 				// Clone MoquiCon
 				checkout([$class: 'GitSCM',
-					branches: [[name: '*/jenkinsSonar-docker']],
+					branches: [[name: '*/JenkinsSonar-docker']],
 					extensions: [[
 						$class: 'RelativeTargetDirectory',
 						relativeTargetDir: "runtime/component/MoquiCon"]], 
