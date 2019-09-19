@@ -109,13 +109,15 @@ pipeline {
 		}
 
 		stage('Dockerize') {
-			script {
-				sh """ 
-					cd ..
-					pwd
-					./docker-build.sh moqui-framework moquicon
-					docker push moquicon
-				"""
+			steps {
+				script {
+					sh """ 
+						cd ..
+						pwd
+						./docker-build.sh moqui-framework moquicon
+						docker push moquicon
+					"""
+				}
 			}
 		}
 	}
