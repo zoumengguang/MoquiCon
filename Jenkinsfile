@@ -76,7 +76,6 @@ pipeline {
 			steps {
 				// Set gradle home so it doesn't get killed in the home directory
 				sh """
-					java -version
 					export GRADLE_USER_HOME=".gradle"
 					./gradlew -g \$GRADLE_USER_HOME getDepends -PlocationType=current
 					rm -r .git
@@ -84,6 +83,16 @@ pipeline {
 					./gradlew -g \$GRADLE_USER_HOME loadProduction
 				"""
 				archiveArtifacts artifacts: '*.war', fingerprint: true
+			}
+		}
+
+		stage('Dockerize') {
+			steps {
+				sh """
+					cd runtime/component/MoquiCon
+					./docker-build.sh moqui-framework moquicon
+					docker push moquicon
+				"""
 			}
 		}
 
@@ -95,28 +104,12 @@ pipeline {
 			steps {
 				withSonarQubeEnv('sonarqube') {
 					sh """
-						java -version
-						cd runtime/component/MoquiCon
-						ls
 						${scannerHome}/bin/sonar-scanner -Dproject.settings=./sonar-project.properties
 					"""
 				}
 
 				timeout(time: 10, unit: 'MINUTES') {
 					waitForQualityGate abortPipeline: true
-				}
-			}
-		}
-
-		stage('Dockerize') {
-			steps {
-				script {
-					sh """ 
-						cd ..
-						pwd
-						./docker-build.sh moqui-framework moquicon
-						docker push moquicon
-					"""
 				}
 			}
 		}
