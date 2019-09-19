@@ -95,16 +95,27 @@ pipeline {
 			steps {
 				withSonarQubeEnv('sonarqube') {
 					sh """
-					java -version
-					cd runtime/component/MoquiCon
-					ls
-					${scannerHome}/bin/sonar-scanner -Dproject.settings=./sonar-project.properties
-				"""
+						java -version
+						cd runtime/component/MoquiCon
+						ls
+						${scannerHome}/bin/sonar-scanner -Dproject.settings=./sonar-project.properties
+					"""
 				}
 
 				timeout(time: 10, unit: 'MINUTES') {
 					waitForQualityGate abortPipeline: true
 				}
+			}
+		}
+
+		stage('Dockerize') {
+			script {
+				sh """ 
+					cd ..
+					pwd
+					./docker-build.sh moqui-framework moquicon
+					docker push moquicon
+				"""
 			}
 		}
 	}
